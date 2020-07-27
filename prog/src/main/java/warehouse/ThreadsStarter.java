@@ -1,5 +1,6 @@
 package warehouse;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +9,14 @@ public class ThreadsStarter {
 
     public static void main(String[] args) {
         Warehouse war = new Warehouse();
-
-        for (int i = 0; i < Integer.parseInt(args[0]); i++) {  //разделил создание потоков и их запуск
-            ls.add(new Buyer(war));
+        try {
+            for (int i = 0; i < Integer.parseInt(args[0]); i++) {  //разделил создание потоков и их запуск
+                ls.add(new Buyer(war));
+            }
+            runTh();
+        } catch (NumberFormatException ex) {
+            System.out.println("На вход нужно подать целое число - количество потоков");
         }
-        runTh();
     }
 
     public static void runTh() {
