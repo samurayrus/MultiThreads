@@ -3,26 +3,27 @@ package warehouse;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Phaser;
 
 public class ThreadsStarter {
-    private static List<Thread> ls = new ArrayList<Thread>();
+    static final Phaser phaser = new Phaser();
 
     public static void main(String[] args) {
         Warehouse war = new Warehouse();
         try {
+            ExecutorService pool = Executors.newFixedThreadPool(Integer.parseInt(args[0]));
             for (int i = 0; i < Integer.parseInt(args[0]); i++) {  //разделил создание потоков и их запуск
-                ls.add(new Buyer(war));
+                Thread th = new Buyer(war);
+                pool.execute(th);
             }
-            runTh();
+            pool.shutdown();
         } catch (NumberFormatException ex) {
             System.out.println("На вход нужно подать целое число - количество потоков");
         }
+
     }
 
-    public static void runTh() {
-        for (Thread th : ls) {
-            System.out.println("Поток " + th.getName() + " запущен");
-            th.start();
-        }
-    }
 }
