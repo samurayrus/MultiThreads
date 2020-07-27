@@ -18,7 +18,10 @@ public class Buyer extends Thread {
     @Override
     public void run() {
         while (true) {
-            quantityPurchase++;  //+1 покупка
+            quantityPurchase++;  //+1 покупка. Считаются не сколько мы покупок сделали, а сколько раз попытались купить. Пришли на склад - там пусто - все равно +1 покупка
+            if (war.getProduct() == 0) {  //Условие выхода. На складе ничего нет
+                break;
+            }
             int thisPurchase = war.change(productsPerBuy); //берем товар со склада. Раздел на две переменные, чтобы вывести в inform количество взятого товара и остаток, который забрали
             sumPurchase += thisPurchase;
 
@@ -27,12 +30,8 @@ public class Buyer extends Thread {
             if (thisPurchase != productsPerBuy && thisPurchase != 0) {
                 balance = thisPurchase;
                 System.out.println("Забор остатка " + thisPurchase + " Пришло " + productsPerBuy + " запрос ");
-                break;
+                break;  //забрали остаток, значит дальше можно ничего не делать и выводить результат
             }
-
-         //   if (thisPurchase == 0) {
-          //      break; //Если мы изменили кол-во товара на складе на 0, то уже ничего не сделаем и выходим с выводом
-         //   }
 
             try {
                 Thread.sleep(5);

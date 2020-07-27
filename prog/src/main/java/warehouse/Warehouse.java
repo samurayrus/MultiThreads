@@ -1,7 +1,7 @@
 package warehouse;
 
 public class Warehouse {
-    private int product = 1000; //Кол-во продукта на складе
+    private int product = 100000; //Кол-во продукта на складе
 
     public int getProduct() {
         return product;
