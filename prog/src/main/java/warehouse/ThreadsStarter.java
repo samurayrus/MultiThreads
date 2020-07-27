@@ -16,8 +16,8 @@ public class ThreadsStarter {
         try {
             ExecutorService pool = Executors.newFixedThreadPool(Integer.parseInt(args[0]));
             for (int i = 0; i < Integer.parseInt(args[0]); i++) {  //разделил создание потоков и их запуск
-                Thread th = new Buyer(war);
-                pool.execute(th);
+                Thread thread = new Buyer(war);
+                pool.execute(thread);
             }
             pool.shutdown();
         } catch (NumberFormatException ex) {
