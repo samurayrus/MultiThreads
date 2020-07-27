@@ -11,10 +11,10 @@ public class Warehouse {
         this.product = product;
     }
 
-    public synchronized int change(int ggg) {
-        if (ggg <= getProduct()) {
-            this.product -=ggg;
-            return ggg;
+    public synchronized int change(int changeProduct) { //изменение товара на складе + возвращает на сколько вышло изменить
+        if (changeProduct <= getProduct()) {
+            this.product -= changeProduct;
+            return changeProduct;
         } else {
             int ccc = getProduct();
             setProduct(0);

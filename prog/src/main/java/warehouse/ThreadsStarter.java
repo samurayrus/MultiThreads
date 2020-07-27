@@ -9,7 +9,7 @@ public class ThreadsStarter {
     public static void main(String[] args) {
         Warehouse war = new Warehouse();
 
-        for (int i = 0; i < Integer.parseInt(args[0]); i++) {
+        for (int i = 0; i < Integer.parseInt(args[0]); i++) {  //разделил создание потоков и их запуск
             ls.add(new Buyer(war));
         }
         runTh();
