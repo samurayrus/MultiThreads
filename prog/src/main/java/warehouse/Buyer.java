@@ -39,9 +39,7 @@ public class Buyer extends Thread {
 
         ThreadsStarter.phaser.arriveAndAwaitAdvance();
         run();
-
     }
-
 
     public void inform() {
 

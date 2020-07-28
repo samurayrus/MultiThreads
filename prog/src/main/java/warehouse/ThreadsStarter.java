@@ -1,8 +1,5 @@
 package warehouse;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,7 +20,6 @@ public class ThreadsStarter {
         } catch (NumberFormatException ex) {
             System.out.println("На вход нужно подать целое число - количество потоков");
         }
-
     }
 
 }

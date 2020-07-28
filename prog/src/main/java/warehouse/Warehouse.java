@@ -13,13 +13,12 @@ public class Warehouse {
 
     public synchronized int change(int changeProduct) { //изменение товара на складе + возвращает на сколько вышло изменить
         if (changeProduct <= getProduct()) {
-            this.product -= changeProduct;
+            setProduct(getProduct() - changeProduct);
             return changeProduct;
         } else {
             int oldProduct = getProduct();
             setProduct(0);
             return oldProduct;
         }
-
     }
 }
