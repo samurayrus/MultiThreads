@@ -17,11 +17,10 @@ public class Buyer extends Thread {
     public void run() {
         while (true) {
             ThreadsStarter.phaser.arriveAndAwaitAdvance(); //Сообщает о готовности и ждет других участников
-
             productsPerBuy = 1 + new Random().nextInt(10);  //рандом значение. Сколько будет брать товара за раз
             quantityPurchase++;  //+1 покупка. Считаются не сколько мы покупок сделали, а сколько раз попытались купить. Пришли на склад - там пусто - все равно +1 покупка
-            if (war.getProduct() == 0) {  //Условие выхода. На складе ничего нет
 
+            if (war.getProduct() == 0) {  //Условие выхода. На складе ничего нет
                 ThreadsStarter.phaser.arrive();
                 break;
             }

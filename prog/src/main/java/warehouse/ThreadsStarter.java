@@ -11,8 +11,8 @@ public class ThreadsStarter {
     public static void main(String[] args) {
         Warehouse war = new Warehouse();
         try {
-            Integer numberOfBuyers = Integer.parseInt(args[0]);
-            phaser= new Phaser(numberOfBuyers);
+            int numberOfBuyers = Integer.parseInt(args[0]);
+            phaser = new Phaser(numberOfBuyers);
             ExecutorService pool = Executors.newFixedThreadPool(numberOfBuyers);
             for (int i = 0; i < numberOfBuyers; i++) {  //разделил создание потоков и их запуск
                 Thread thread = new Buyer(war);
