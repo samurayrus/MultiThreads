@@ -18,11 +18,11 @@ public class Buyer extends Thread {
     @Override
     public void run() {
         try {
-            while (!ThreadsStarter.cyclicBarrier.isBroken()) {
+            //while (!ThreadsStarter.cyclicBarrier.isBroken()) - не пригодилось
+            while (true) {
                 ThreadsStarter.cyclicBarrier.await(); //Сообщает о готовности и ждет других участников
                 productsPerBuy = 1 + new Random().nextInt(10);  //рандом значение. Сколько будет брать товара за раз
                 quantityPurchase++;  //+1 покупка. Считаются не сколько мы покупок сделали, а сколько раз попытались купить. Пришли на склад - там пусто - все равно +1 покупка
-
 
                 int thisPurchase = war.change(productsPerBuy); //берем товар со склада. Раздел на две переменные, чтобы вывести в inform количество взятого товара и остаток, который забрали
                 sumPurchase += thisPurchase;
