@@ -16,9 +16,9 @@ public class Warehouse {
             this.product -= changeProduct;
             return changeProduct;
         } else {
-            int ccc = getProduct();
+            int oldProduct = getProduct();
             setProduct(0);
-            return ccc;
+            return oldProduct;
         }
 
     }
