@@ -11,14 +11,13 @@ public class Buyer extends Thread {
 
     public Buyer(Warehouse war) {
         this.war = war;
-        productsPerBuy = 1 + new Random().nextInt(10);  //рандом значение. Сколько будет брать товара за раз
-        System.out.println("Запрос на " + productsPerBuy + " в " + this.getName()); //Вывод для инфо
         ThreadsStarter.phaser.register();
     }
 
     @Override
     public void run() {
         while (true) {
+            productsPerBuy = 1 + new Random().nextInt(10);  //рандом значение. Сколько будет брать товара за раз
             quantityPurchase++;  //+1 покупка. Считаются не сколько мы покупок сделали, а сколько раз попытались купить. Пришли на склад - там пусто - все равно +1 покупка
             if (war.getProduct() == 0) {  //Условие выхода. На складе ничего нет
 
