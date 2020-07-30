@@ -43,8 +43,6 @@ public class Buyer extends Thread {
                     break;  //забрали остаток, значит дальше можно ничего не делать и выводить результат
                 }
             }
-
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (BrokenBarrierException e) {
