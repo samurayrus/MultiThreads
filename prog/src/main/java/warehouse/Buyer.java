@@ -19,23 +19,25 @@ public class Buyer extends Thread {
     public void run() {
         try {
             //while (!ThreadsStarter.cyclicBarrier.isBroken()) - не пригодилось
-            while (true) {
-                ThreadsStarter.cyclicBarrier.await(); //Сообщает о готовности и ждет других участников
-                productsPerBuy = 1 + new Random().nextInt(10);  //рандом значение. Сколько будет брать товара за раз
-                quantityPurchase++;  //+1 покупка. Считаются не сколько мы покупок сделали, а сколько раз попытались купить. Пришли на склад - там пусто - все равно +1 покупка
 
+            while (true) {
+                //+1 покупка. Считаются не сколько мы покупок сделали, а сколько раз попытались купить.
+                // Пришли на склад - там пусто - все равно +1 покупка. Если стоим в ожидании остальных,
+                // чтобы пойти на склад, а потом приходит один и говорит - на складе ничего нет, расходимся - тоже +1
+                quantityPurchase++;
+                ThreadsStarter.cyclicBarrier.await(); //Сообщает о готовности и ждет других участников
+
+                productsPerBuy = 1 + new Random().nextInt(10);  //рандом значение. Сколько будет брать товара за раз
                 int thisPurchase = war.change(productsPerBuy); //берем товар со склада. Раздел на две переменные, чтобы вывести в inform количество взятого товара и остаток, который забрали
                 sumPurchase += thisPurchase;
 
-                if (thisPurchase == 0) {  //Условие выхода. На складе ничего нет
-                    ThreadsStarter.cyclicBarrier.reset();
-                    break;
-                }
                 //Если получили меньше того, что запрашивали - записываем в остаток.
                 // Второе условие, чтобы не выводило лишие запросы в конце (Когда на складе ничего нет
                 if (thisPurchase != productsPerBuy) {
-                    balance = thisPurchase;
-                    System.out.println("Забор остатка " + thisPurchase + " Пришло " + productsPerBuy + " запрос ");
+                    if (thisPurchase != 0) {
+                        balance = thisPurchase;
+                        System.out.println("Забор остатка " + thisPurchase + " Пришло " + productsPerBuy + " запрос ");
+                    }
                     //Сбрасываем барьер, генерим всем остальным покупателям в ожидании BrokenBarrierException и получаем вывод
                     ThreadsStarter.cyclicBarrier.reset();
                     break;  //забрали остаток, значит дальше можно ничего не делать и выводить результат
@@ -46,7 +48,8 @@ public class Buyer extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (BrokenBarrierException e) {
-            //При сбросе барьера
+            //При сбросе барьера. Вызывается при cyclicBarrier.reset() у тех, кто ждал на cyclicBarrier.await()
+            System.out.println("=== {" + getName() + "} Вышел из ожидания из-за сломанного барьера ===");
         } finally {
             inform(); //Выполнится и при завершении кода и при BrokenBarrierException
         }
