@@ -19,7 +19,7 @@ public class ThreadsStarter {
                 pool.execute(thread);
             }
             pool.shutdown();
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException ex) {
             System.out.println("На вход нужно подать целое число больше нуля - количество потоков");
         }
     }
