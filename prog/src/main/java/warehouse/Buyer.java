@@ -18,13 +18,7 @@ public class Buyer extends Thread {
     @Override
     public void run() {
         try {
-            //while (!ThreadsStarter.cyclicBarrier.isBroken()) - не пригодилось
-
-            while (true) {
-                //+1 покупка. Считаются не сколько мы покупок сделали, а сколько раз попытались купить.
-                // Пришли на склад - там пусто - все равно +1 покупка. Если стоим в ожидании остальных,
-                // чтобы пойти на склад, а потом приходит один и говорит - на складе ничего нет, расходимся - тоже +1
-                quantityPurchase++;
+            while (war.getProduct() > 0) {
                 ThreadsStarter.cyclicBarrier.await(); //Сообщает о готовности и ждет других участников
 
                 productsPerBuy = 1 + new Random().nextInt(10);  //рандом значение. Сколько будет брать товара за раз
@@ -32,16 +26,17 @@ public class Buyer extends Thread {
                 sumPurchase += thisPurchase;
 
                 //Если получили меньше того, что запрашивали - записываем в остаток.
-                // Второе условие, чтобы не выводило лишие запросы в конце (Когда на складе ничего нет
-                if (thisPurchase != productsPerBuy) {
-                    if (thisPurchase != 0) {
+                if (thisPurchase != 0) {
+                    quantityPurchase++;
+                    if (thisPurchase < productsPerBuy)
                         balance = thisPurchase;
-                        System.out.println("Забор остатка " + thisPurchase + " Пришло " + productsPerBuy + " запрос ");
-                    }
-                    //Сбрасываем барьер, генерим всем остальным покупателям в ожидании BrokenBarrierException и получаем вывод
-                    ThreadsStarter.cyclicBarrier.reset();
-                    break;  //забрали остаток, значит дальше можно ничего не делать и выводить результат
                 }
+
+                //Сбрасываем барьер, генерим всем остальным покупателям в ожидании BrokenBarrierException
+                //ThreadsStarter.cyclicBarrier.reset();
+                //ThreadsStarter.exiter = true;
+                //throw new BrokenBarrierException();
+                ThreadsStarter.cyclicBarrier.await();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
