@@ -47,7 +47,7 @@ public class Buyer extends Thread {
             e.printStackTrace();
         } catch (BrokenBarrierException e) {
             //При сбросе барьера. Вызывается при cyclicBarrier.reset() у тех, кто ждал на cyclicBarrier.await()
-            System.out.println("=== {" + getName() + "} Вышел из ожидания из-за сломанного барьера ===");
+            System.out.println("=== [ОТЛАДКА {" + getName() + "} Вышел из ожидания из-за сломанного барьера] ===");
         } finally {
             inform(); //Выполнится и при завершении кода и при BrokenBarrierException
         }
