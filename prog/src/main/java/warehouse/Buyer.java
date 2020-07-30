@@ -20,18 +20,15 @@ public class Buyer extends Thread {
             productsPerBuy = 1 + new Random().nextInt(10);  //рандом значение. Сколько будет брать товара за раз
             quantityPurchase++;  //+1 покупка. Считаются не сколько мы покупок сделали, а сколько раз попытались купить. Пришли на склад - там пусто - все равно +1 покупка
 
-            if (war.getProduct() == 0) {  //Условие выхода. На складе ничего нет
-                ThreadsStarter.phaser.arrive();
-                break;
-            }
             int thisPurchase = war.change(productsPerBuy); //берем товар со склада. Раздел на две переменные, чтобы вывести в inform количество взятого товара и остаток, который забрали
             sumPurchase += thisPurchase;
-
             //Если получили меньше того, что запрашивали - записываем в остаток.
             // Второе условие, чтобы не выводило лишие запросы в конце (Когда на складе ничего нет
-            if (thisPurchase != productsPerBuy && thisPurchase != 0) {
-                balance = thisPurchase;
-                System.out.println("Забор остатка " + thisPurchase + " Пришло " + productsPerBuy + " запрос ");
+            if (thisPurchase != productsPerBuy) {
+                if (thisPurchase != 0) {
+                    balance = thisPurchase;
+                    System.out.println("Забор остатка " + thisPurchase + " Пришло " + productsPerBuy + " запрос ");
+                }
                 ThreadsStarter.phaser.arrive();
                 break;  //забрали остаток, значит дальше можно ничего не делать и выводить результат
             }
